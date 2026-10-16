@@ -1,0 +1,357 @@
+{
+  "meta": {
+    "title": "SOD Raqam — Modern ERP for the GCC & India",
+    "description": "SOD Raqam is a premium web ERP covering CRM, sales, costing, purchase, inventory, invoicing, accounting, HR and payroll — multi-company, multi-currency, bilingual Arabic/English, with Excel and PDF everywhere."
+  },
+  "nav": {
+    "features": "Features",
+    "modules": "Modules",
+    "screenshots": "Screenshots",
+    "why": "Why SOD Raqam",
+    "industries": "Industries",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "demo": "Try live demo",
+    "langLabel": "العربية"
+  },
+  "hero": {
+    "eyebrow": "ERP built for the GCC & India",
+    "title": "Run your whole business on one modern ERP",
+    "titleAccent": "SOD Raqam",
+    "subtitle": "From lead to ledger — CRM, sales, costing, purchase, inventory, invoicing, accounting, HR and payroll in a single, fast, bilingual platform. Multi-company, multi-currency, and ready for the UAE, Qatar and India.",
+    "ctaDemo": "Try live demo",
+    "ctaExplore": "Explore features",
+    "trust": "Double-entry accounting · Average & FIFO costing · Arabic & English with full RTL",
+    "mockupAlt": "SOD Raqam dashboard"
+  },
+  "stats": {
+    "modules": "Integrated modules",
+    "currencies": "Multi-currency",
+    "languages": "Arabic & English",
+    "export": "Excel & PDF exports"
+  },
+  "features": {
+    "title": "Everything your operation needs, connected end to end",
+    "subtitle": "One document chain from the first enquiry to the posted journal — nothing re-keyed, every number traceable.",
+    "items": {
+      "crm": {
+        "title": "CRM & Leads",
+        "desc": "Capture enquiries, assign salespeople, log every follow-up and convert won leads into customers and quotations."
+      },
+      "sales": {
+        "title": "Sales & Quotations",
+        "desc": "Costing sheets, revisioned quotations, sales orders, delivery notes and invoices with live margin."
+      },
+      "purchase": {
+        "title": "Purchase",
+        "desc": "RFQs, vendor comparison, purchase orders, goods receipts and vendor bills against every PO."
+      },
+      "inventory": {
+        "title": "Inventory",
+        "desc": "Item master, multi-warehouse stock, minimum-stock alerts and a full stock ledger with average or FIFO costing."
+      },
+      "accounting": {
+        "title": "Accounting",
+        "desc": "Real double-entry: chart of accounts, journals, contra, opening balances and the three financial statements."
+      },
+      "hr": {
+        "title": "HR & Payroll",
+        "desc": "Employee records, leave balances and approvals, and payroll runs that post straight to finance."
+      },
+      "costing": {
+        "title": "Costing sheet",
+        "desc": "Base cost, insurance, freight and overheads with gross profit and margin per quotation and salesperson."
+      },
+      "multi": {
+        "title": "Multi-company & multi-currency",
+        "desc": "Scope every record by company, quote and post in any currency with document-level exchange rates."
+      }
+    }
+  },
+  "modules": {
+    "title": "Deep dives by module",
+    "subtitle": "Real features from the live product — grouped the way your teams actually work.",
+    "list": [
+      {
+        "key": "crm",
+        "name": "CRM & Leads",
+        "tagline": "Turn enquiries into won deals",
+        "points": [
+          "Leads with number, date, source, customer and enquiry detail",
+          "Assign one salesperson per lead; Open / Won / Lost status",
+          "Append-only communication log of every call and note",
+          "Follow-up and bid-closing reminders with a due-today list",
+          "Convert an open lead into a customer master and a linked quotation",
+          "Customer master: unique code, billing & shipping, contacts, credit terms, currency",
+          "Filter by status, salesperson and reminders due"
+        ]
+      },
+      {
+        "key": "sales",
+        "name": "Sales, Costing & Invoicing",
+        "tagline": "From costing sheet to receivable",
+        "points": [
+          "Costing sheet per quotation: base cost, insurance, freight, overheads",
+          "Live gross profit and margin %, with last-sold price per item",
+          "Revisioned quotations (Rev 00, 01, …) typed Firm, Budgetary or Tender",
+          "Price history and links to supplier quotes; PDF & Excel export",
+          "Sales orders from accepted quotations with customer PO and delivery dates",
+          "Partial delivery via delivery notes with EXW / CFR / DDP terms",
+          "Proforma and final invoices, customer receipts and statements",
+          "Overdue invoice list and per-customer statement of account"
+        ]
+      },
+      {
+        "key": "purchase",
+        "name": "Purchase",
+        "tagline": "RFQ to vendor bill, fully linked",
+        "points": [
+          "Vendor master with approved-vendor flag, terms and currency",
+          "RFQs from short sales lines, low stock or typed lines",
+          "Record vendor responses and compare offers side by side",
+          "Purchase orders from the selected quote, with revisions and PDF",
+          "Goods receipts with partial receipt and accept / reject inspection",
+          "Vendor bills against the PO and GRNs, with approval and posting"
+        ]
+      },
+      {
+        "key": "inventory",
+        "name": "Inventory & Items",
+        "tagline": "Real-time stock you can trust",
+        "points": [
+          "Item master per company: stock or service, unit, category, manufacturer ref",
+          "On-hand quantity per warehouse with minimum-stock alerts",
+          "Full stock ledger: opening, in, out, balance, unit cost and value",
+          "Average cost or FIFO valuation, set per company",
+          "Stock moves only from posted GRNs and confirmed deliveries",
+          "Inventory value report and one-click RFQ for shortfalls"
+        ]
+      },
+      {
+        "key": "accounting",
+        "name": "Accounting",
+        "tagline": "Proper double-entry under everything",
+        "points": [
+          "Chart of accounts with asset, liability, equity, income, expense types",
+          "Balanced journal entries with Draft → Posted and reversals",
+          "Contra entries between cash and bank, kept out of P&L",
+          "Opening balances paired with opening stock at go-live",
+          "Trial balance, profit & loss and balance sheet for any date range",
+          "Export every statement to Excel and PDF"
+        ]
+      },
+      {
+        "key": "hr",
+        "name": "HR & Payroll",
+        "tagline": "People and pay, connected to finance",
+        "points": [
+          "Employee records with pay inputs, allowances, deductions and bank details",
+          "Leave types (Annual, Sick, Maternity, Casual, Unpaid) with balances",
+          "Leave requests with manager / HR approval and automatic unpaid handling",
+          "Payroll runs by company, month and year with overtime and deductions",
+          "Posted runs produce a payslip PDF per employee",
+          "One balanced journal per run straight into the ledger"
+        ]
+      }
+    ]
+  },
+  "platform": {
+    "title": "Built on a serious platform",
+    "items": [
+      {
+        "title": "Multi-company",
+        "desc": "Every record is scoped by company, with a company switcher built in."
+      },
+      {
+        "title": "Multi-currency",
+        "desc": "Quote, buy and post in any currency with document-level exchange rates."
+      },
+      {
+        "title": "Roles & permissions",
+        "desc": "Deny-by-default access with Super Admin, Admin, End User and Employee roles."
+      },
+      {
+        "title": "Arabic & English",
+        "desc": "Full bilingual UI with right-to-left layout and logical typography."
+      },
+      {
+        "title": "Document series",
+        "desc": "Company-prefixed, year-based numbering across every document."
+      },
+      {
+        "title": "Excel & PDF",
+        "desc": "Export lists and statements, and print branded PDFs everywhere."
+      },
+      {
+        "title": "Audit log",
+        "desc": "Login events and record changes are tracked for accountability."
+      },
+      {
+        "title": "Module dashboards",
+        "desc": "A focused dashboard for CRM, Sales, Purchase, Inventory, Accounting and HR."
+      }
+    ]
+  },
+  "screenshots": {
+    "title": "See it in action",
+    "subtitle": "Real screens from the live SOD Raqam product.",
+    "items": {
+      "dashboard": "Company dashboard",
+      "crm-leads": "CRM — leads pipeline",
+      "quotations": "Sales — quotations",
+      "costing-sheets": "Costing sheet with live margin",
+      "invoices": "Customer invoices",
+      "stock-ledger": "Inventory — stock ledger",
+      "trial-balance": "Accounting — trial balance",
+      "profit-loss": "Profit & loss statement",
+      "payroll": "HR — payroll run"
+    }
+  },
+  "why": {
+    "title": "Why teams choose SOD Raqam",
+    "items": [
+      {
+        "title": "One connected chain",
+        "desc": "Lead → quotation → order → delivery → invoice → ledger, with no re-keying and full traceability."
+      },
+      {
+        "title": "Made bilingual",
+        "desc": "Arabic and English are first-class, with true RTL — not a bolt-on translation."
+      },
+      {
+        "title": "GCC-ready",
+        "desc": "Multi-currency, tax on documents and branded PDFs suited to the UAE, Qatar and the wider GCC."
+      },
+      {
+        "title": "Finance you can trust",
+        "desc": "Every posting is a balanced journal; costing uses average or FIFO; statements come from posted entries only."
+      },
+      {
+        "title": "Fast and modern",
+        "desc": "A quick, responsive web app your team can learn in a day."
+      },
+      {
+        "title": "Backed by SOD",
+        "desc": "Built and supported by SOD Technologies, with implementation help for your rollout."
+      }
+    ]
+  },
+  "industries": {
+    "title": "Built for trading, contracting & services",
+    "subtitle": "SOD Raqam fits businesses that quote, buy, stock, deliver and account — across the GCC and India.",
+    "items": [
+      {
+        "title": "Trading & distribution",
+        "desc": "Quotations, stock, multi-warehouse inventory and margins under control."
+      },
+      {
+        "title": "Contracting & projects",
+        "desc": "Costing sheets, RFQs, purchase orders and progress invoicing."
+      },
+      {
+        "title": "Manufacturing & assembly",
+        "desc": "Item master, FIFO or average costing and a reliable stock ledger."
+      },
+      {
+        "title": "Professional services",
+        "desc": "Service items, proformas, invoices and receivables without stock overhead."
+      }
+    ]
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "items": [
+      {
+        "q": "Does SOD Raqam support Arabic?",
+        "a": "Yes. The entire interface is available in Arabic and English with full right-to-left layout, so Arabic-first teams work naturally."
+      },
+      {
+        "q": "Can it handle more than one company?",
+        "a": "Yes. Every record is scoped by company and a company switcher lets you move between the businesses you manage."
+      },
+      {
+        "q": "Which currencies are supported?",
+        "a": "Any. You can quote, buy and post in multiple currencies, with an exchange rate captured on each foreign-currency document."
+      },
+      {
+        "q": "How does accounting work?",
+        "a": "It is real double-entry. Invoices, receipts, vendor bills and payroll all post balanced journals into a chart of accounts, and you get a trial balance, profit & loss and balance sheet."
+      },
+      {
+        "q": "What inventory costing is available?",
+        "a": "Average cost or FIFO, chosen per company, with a full stock ledger showing quantity and value for every movement."
+      },
+      {
+        "q": "Can I export to Excel and PDF?",
+        "a": "Yes. Lists export to Excel and documents and statements print as branded PDFs."
+      },
+      {
+        "q": "Is there a live demo?",
+        "a": "Yes. Request a demo login from our proof-of-concept page and explore SOD Raqam with sample data."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready to see SOD Raqam on your numbers?",
+    "subtitle": "Request a live demo login and explore the full product with sample data — no installation needed.",
+    "button": "Try live demo",
+    "secondary": "Talk to us"
+  },
+  "contact": {
+    "title": "Talk to our team",
+    "subtitle": "Tell us about your business and we'll set up a tailored walkthrough for the GCC or India.",
+    "email": "Email",
+    "demoTitle": "Prefer to explore first?",
+    "demoDesc": "Get an instant demo login from our proof-of-concept page.",
+    "demoButton": "Open the live demo"
+  },
+  "footer": {
+    "tagline": "Modern ERP for the GCC & India — CRM, sales, purchase, inventory, accounting, HR and payroll in one bilingual platform.",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "rights": "All rights reserved.",
+    "madeby": "A product of SOD Technologies."
+  },
+  "form": {
+    "name": "Full name",
+    "company": "Company",
+    "email": "Work email",
+    "phone": "Phone",
+    "country": "Country",
+    "interest": "I'm interested in",
+    "message": "Message",
+    "namePh": "Your name",
+    "companyPh": "Your company",
+    "emailPh": "you@company.com",
+    "phonePh": "+971 50 000 0000",
+    "messagePh": "Tell us about your business and what you'd like to see.",
+    "countries": [
+      "United Arab Emirates",
+      "Qatar",
+      "Saudi Arabia",
+      "Oman",
+      "Kuwait",
+      "Bahrain",
+      "India",
+      "Other"
+    ],
+    "interests": [
+      "A full product demo",
+      "CRM & Sales",
+      "Inventory & Purchase",
+      "Accounting",
+      "HR & Payroll",
+      "Pricing & implementation"
+    ],
+    "submit": "Request a demo",
+    "submitting": "Sending…",
+    "successTitle": "Thank you!",
+    "success": "We've received your request. Our team will contact you shortly.",
+    "errorTitle": "Something went wrong",
+    "error": "We couldn't send your message. Please try again, or email us directly.",
+    "required": "Please fill in all required fields.",
+    "invalidEmail": "Please enter a valid email address.",
+    "consent": "We'll only use your details to follow up on your enquiry."
+  }
+}

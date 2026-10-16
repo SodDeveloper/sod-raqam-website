@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --color-indigo-brand: #3B2A8F;
+  --color-violet-brand: #7B4DDB;
+  --color-midnight: #1C1640;
+  --color-lavender: #F5F3FC;
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: var(--font-arabic), var(--font-poppins), sans-serif;
+
+  --radius-xl2: 1.25rem;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1C1640;
+}
+
+* {
+  border-color: color-mix(in oklab, var(--color-midnight) 12%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html[dir="rtl"] body {
+  font-family: var(--font-arabic);
+}
+
+/* Brand gradients & glass */
+.brand-gradient {
+  background-image: linear-gradient(120deg, #3B2A8F 0%, #7B4DDB 100%);
+}
+.brand-text-gradient {
+  background-image: linear-gradient(120deg, #3B2A8F 0%, #7B4DDB 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.glass {
+  background: color-mix(in oklab, white 70%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid color-mix(in oklab, #7B4DDB 18%, transparent);
+}
+.mesh-bg {
+  background-color: #F5F3FC;
+  background-image:
+    radial-gradient(44rem 44rem at 12% -10%, color-mix(in oklab, #7B4DDB 28%, transparent), transparent 60%),
+    radial-gradient(40rem 40rem at 100% 0%, color-mix(in oklab, #3B2A8F 24%, transparent), transparent 55%);
+}
+.card-shadow {
+  box-shadow: 0 1px 2px rgba(28,22,64,.06), 0 12px 40px -12px rgba(59,42,143,.18);
+}
+
+::selection {
+  background: color-mix(in oklab, #7B4DDB 30%, transparent);
+}
