@@ -16,6 +16,7 @@ $CONFIG_PATH = getenv('SOD_LEAD_CONFIG') ?: '/etc/sod-raqam/website-lead.json';
 $ALLOWED_ORIGINS = [
     'https://sodraqam.com',
     'https://www.sodraqam.com',
+    'https://soddeveloper.github.io',
     'http://localhost:3000',
     'http://localhost:4173',
 ];
