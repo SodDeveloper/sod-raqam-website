@@ -130,6 +130,12 @@ server/
 
 ## 6. Lead endpoint (server-side — on the Raqam server, not in the static zip)
 
+> **Deployment status:** This endpoint is already deployed and live on the Raqam
+> server at `POST https://erp.sodraqam.com/api/website-lead`. It reuses the
+> existing POC Odoo API user/key (copied server-to-server, never committed).
+> A verified TEST lead was created in Odoo during QA. No action is needed from
+> Ragesh for the endpoint; Ragesh only hosts the static `out/` folder.
+
 Because the site is static and the host (Ragesh) is untrusted with secrets, the
 contact form submits to a small endpoint hosted on **our** Raqam server:
 
