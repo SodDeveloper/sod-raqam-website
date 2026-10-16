@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
+import { withBase } from "@/lib/site";
 
 const shots = [
   "dashboard", "crm-leads", "quotations", "costing-sheets",
@@ -20,7 +21,7 @@ export function Screenshots() {
               <figure className="group overflow-hidden rounded-2xl">
                 <div className="overflow-hidden rounded-2xl bg-lavender/40 p-2 transition-transform group-hover:-translate-y-1">
                   <Image
-                    src={`/screens/${s}.png`}
+                    src={withBase(`/screens/${s}.png`)}
                     alt={t(`items.${s}`)}
                     width={1100}
                     height={760}

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button-link";
-import { DEMO_URL } from "@/lib/site";
+import { DEMO_URL, withBase } from "@/lib/site";
 
 export function Hero() {
   const t = useTranslations("hero");
@@ -73,7 +73,7 @@ export function Hero() {
               className="relative"
             >
               <Image
-                src="/screens/hero-dashboard.png"
+                src={withBase("/screens/hero-dashboard.png")}
                 alt={t("mockupAlt")}
                 width={1200}
                 height={820}

@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { Menu, X, Globe } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button-link";
-import { DEMO_URL } from "@/lib/site";
+import { DEMO_URL, withBase } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -13,7 +13,7 @@ export function Header() {
   const locale = useLocale();
   const pathname = usePathname();
   const other = locale === "ar" ? "en" : "ar";
-  const switchHref = pathname.replace(`/${locale}`, `/${other}`) || `/${other}/`;
+  const switchHref = withBase(pathname.replace(`/${locale}`, `/${other}`) || `/${other}/`);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -42,8 +42,8 @@ export function Header() {
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a href={`/${locale}/`} className="flex items-center gap-2">
-          <Image src="/brand/logo-horizontal.svg" alt="SOD Raqam" width={150} height={34} priority className="h-8 w-auto" />
+        <a href={withBase(`/${locale}/`)} className="flex items-center gap-2">
+          <Image src={withBase("/brand/logo-horizontal.svg")} alt="SOD Raqam" width={150} height={34} priority className="h-8 w-auto" />
         </a>
         <nav className="hidden items-center gap-6 lg:flex">
           {links.map(([k, h]) => (

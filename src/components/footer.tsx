@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { DEMO_URL, CONTACT_EMAIL } from "@/lib/site";
+import { DEMO_URL, CONTACT_EMAIL, withBase } from "@/lib/site";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -12,7 +12,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <Image src="/brand/logo-white.svg" alt="SOD Raqam" width={160} height={36} className="h-9 w-auto" />
+            <Image src={withBase("/brand/logo-white.svg")} alt="SOD Raqam" width={160} height={36} className="h-9 w-auto" />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">{t("tagline")}</p>
           </div>
           <div>
