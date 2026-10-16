@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { DEMO_URL, CONTACT_EMAIL, withBase } from "@/lib/site";
+import { Branches } from "@/components/branches";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -34,6 +35,13 @@ export function Footer() {
             </ul>
           </div>
         </div>
+        <div className="mt-12 border-t border-white/10 pt-10">
+          <h4 className="text-sm font-semibold text-white">{t("offices")}</h4>
+          <div className="mt-5">
+            <Branches variant="footer" />
+          </div>
+        </div>
+
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-sm text-white/50 sm:flex-row">
           <p>© {year} SOD Raqam. {t("rights")}</p>
           <p>{t("madeby")}</p>

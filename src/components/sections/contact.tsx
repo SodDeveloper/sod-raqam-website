@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
 import { CONTACT_EMAIL, DEMO_URL } from "@/lib/site";
+import { Branches } from "@/components/branches";
 
 const ENDPOINT =
   process.env.NEXT_PUBLIC_LEAD_ENDPOINT ||
@@ -137,6 +138,15 @@ export function Contact() {
                 <p className="mt-3 text-center text-xs text-midnight/50">{f("consent")}</p>
               </form>
             )}
+          </Reveal>
+        </div>
+
+        <div className="mt-12">
+          <Reveal>
+            <h3 className="text-center text-xl font-bold text-midnight sm:text-2xl">{t("branchesTitle")}</h3>
+            <div className="mx-auto mt-6 max-w-5xl">
+              <Branches />
+            </div>
           </Reveal>
         </div>
       </div>

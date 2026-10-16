@@ -303,7 +303,10 @@
     "email": "Email",
     "demoTitle": "Prefer to explore first?",
     "demoDesc": "Get an instant demo login from our proof-of-concept page.",
-    "demoButton": "Open the live demo"
+    "demoButton": "Open the live demo",
+    "branchesTitle": "Our offices",
+    "call": "Call",
+    "emailLabel": "Email"
   },
   "footer": {
     "tagline": "Modern ERP for the GCC & India — CRM, sales, purchase, inventory, accounting, HR and payroll in one bilingual platform.",
@@ -311,7 +314,8 @@
     "company": "Company",
     "legal": "Legal",
     "rights": "All rights reserved.",
-    "madeby": "A product of SOD Technologies."
+    "madeby": "A product of SOD Technologies.",
+    "offices": "Our offices"
   },
   "form": {
     "name": "Full name",
@@ -353,5 +357,10 @@
     "required": "Please fill in all required fields.",
     "invalidEmail": "Please enter a valid email address.",
     "consent": "We'll only use your details to follow up on your enquiry."
+  },
+  "branches": {
+    "qatar": "Qatar — Doha",
+    "uae": "UAE — Dubai",
+    "india": "India — Kochi"
   }
 }

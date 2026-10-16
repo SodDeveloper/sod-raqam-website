@@ -1,6 +1,6 @@
 export const SITE_URL = "https://sodraqam.com";
 export const DEMO_URL = "https://poc.soderp.com";
-export const CONTACT_EMAIL = "info@sodtechnologies.com";
+export const CONTACT_EMAIL = "info@sodinfotech.com";
 export const locales = ["en", "ar"] as const;
 export type Locale = (typeof locales)[number];
 
@@ -10,3 +10,11 @@ export function withBase(path: string): string {
   const p = path.startsWith("/") ? path : `/${path}`;
   return `${BASE_PATH}${p}`;
 }
+
+export type Branch = { id: "qatar" | "uae" | "india"; address: string; phone?: string };
+// Source: official SOD Infotech site https://sodinfotech.com/contact (branch list).
+export const BRANCHES: Branch[] = [
+  { id: "qatar", address: "Building No 43, Street 46, Zone 46 Doha, Qatar" },
+  { id: "uae", address: "Meydan Grandstand, 6th Floor, Meydan Road, Nad Al Sheba Dubai, UAE", phone: "+971589074828" },
+  { id: "india", address: "Jigsaw, Kandamkulathy Towers, MG Road, Ernakulam, Near Maharajas Metro Station, 682011" },
+];
