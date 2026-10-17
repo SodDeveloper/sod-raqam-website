@@ -3,8 +3,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { DemoButton } from "@/components/demo/demo-dialog";
 import { ButtonLink } from "@/components/ui/button-link";
-import { DEMO_URL, withBase } from "@/lib/site";
+import { withBase } from "@/lib/site";
 
 export function Hero() {
   const t = useTranslations("hero");
@@ -44,9 +45,9 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.19 }}
               className="mt-8 flex flex-wrap gap-3"
             >
-              <ButtonLink href={DEMO_URL} target="_blank" rel="noopener" size="lg">
+              <DemoButton size="lg">
                 {t("ctaDemo")} <ArrowRight className="h-5 w-5 rtl:rotate-180" />
-              </ButtonLink>
+              </DemoButton>
               <ButtonLink href="#features" variant="outline" size="lg">
                 {t("ctaExplore")}
               </ButtonLink>

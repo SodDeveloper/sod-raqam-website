@@ -1,12 +1,37 @@
 <?php
 /**
  * SOD Raqam website lead endpoint.
- * Receives the marketing-site contact form (static site on sodraqam.com) and
- * creates a crm.lead in Odoo (odoo.soderp.com), mirroring the POC lead flow:
- *   - tag "SOD Raqam", source "Website - sodraqam.com"
+ * Receives marketing-site forms (static site on sodraqam.com) and writes
+ * crm.lead records in Odoo (odoo.soderp.com). Two flows:
+ *
+ *   1. Contact form — JSON without "type", or type != "demo".
+ *      Same validation, title, description, type 'lead', tag, source, and
+ *      team as before. Success: {"ok":true,"id":<lead id>}.
+ *      Odoo failures stay HTTP 502.
+ *
+ *   2. Demo request — JSON "type": "demo". Mirrors the POC demo-lead service
+ *      (poc.soderp.com): name/phone/email validation, dedupe an open lead by
+ *      email, create or note the lead, then return demo credentials.
+ *      A filled honeypot ("website") stores nothing and returns
+ *      {"ok":true,"message":"Thank you."} with no credentials.
+ *      Success: {"ok":true,"id":<lead id>,"demo":{"url","username","password"}}
+ *      (plus "existing":true when the email already has an open lead).
+ *      If demo username/password are not configured, the lead is still
+ *      created and the response is {"ok":true,"id",
+ *      "message":"SOD will share access shortly."} with no "demo" object.
+ *      If the Odoo push throws, one JSON line is appended to
+ *      /var/lib/sod-raqam-lead/pending-demo-leads.jsonl and the response is
+ *      still HTTP 200 with the credentials and "queued":true.
+ *
  * Deploy on the Raqam server behind nginx at /api/website-lead.
- * Config (Odoo URL/DB/user/API key) lives OUTSIDE the web root in a
- * root-only JSON file; see $CONFIG_PATH. Never commit real credentials.
+ * Config (Odoo URL/DB/user/API key, optional demo credentials) lives
+ * OUTSIDE the web root in a root-only JSON file; see $CONFIG_PATH.
+ * Never commit real credentials.
+ *
+ * Optional top-level config key "demo" (body "product" is ignored; only
+ * demo.product, default "SOD Raqam", is trusted):
+ *   "demo": {"product":"SOD Raqam","url":"https://erp.sodraqam.com",
+ *            "username":"...","password":"..."}
  */
 
 declare(strict_types=1);
@@ -60,27 +85,44 @@ if (!empty($d['website'])) {
     out(200, ['ok' => true, 'message' => 'Thank you.']);
 }
 
-$name    = trim((string)($d['name'] ?? ''));
-$company = trim((string)($d['company'] ?? ''));
-$email   = trim((string)($d['email'] ?? ''));
-$phone   = trim((string)($d['phone'] ?? ''));
-$country = trim((string)($d['country'] ?? ''));
-$interest= trim((string)($d['interest'] ?? ''));
-$message = trim((string)($d['message'] ?? ''));
-$locale  = (($d['locale'] ?? 'en') === 'ar') ? 'ar' : 'en';
+$isDemo = (($d['type'] ?? '') === 'demo');
 
-foreach ([&$name,&$company,&$email,&$phone,&$country,&$interest] as &$v) {
-    $v = mb_substr($v, 0, 160);
-}
-unset($v);
-$message = mb_substr($message, 0, 4000);
+if ($isDemo) {
+    $name   = mb_substr(trim((string)($d['name'] ?? '')), 0, 120);
+    $email  = trim((string)($d['email'] ?? ''));
+    $phone  = trim((string)($d['phone'] ?? ''));
+    $locale = (($d['locale'] ?? 'en') === 'ar') ? 'ar' : 'en';
 
-if (mb_strlen($name) < 2) out(400, ['error' => 'Please enter your name.']);
-if (!preg_match('/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/', $email)) {
-    out(400, ['error' => 'Please enter a valid email address.']);
-}
-if (!preg_match('/^\+?[0-9][0-9 ()\-]{6,24}$/', $phone)) {
-    out(400, ['error' => 'Please enter a valid phone number.']);
+    if (mb_strlen($name) < 2) out(400, ['error' => 'Please enter your name.']);
+    if (!preg_match('/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/', $email)) {
+        out(400, ['error' => 'Please enter a valid email address.']);
+    }
+    if (!preg_match('/^\+?[0-9][0-9 ()\-]{6,19}$/', $phone)) {
+        out(400, ['error' => 'Please enter a valid phone number (country code allowed).']);
+    }
+} else {
+    $name    = trim((string)($d['name'] ?? ''));
+    $company = trim((string)($d['company'] ?? ''));
+    $email   = trim((string)($d['email'] ?? ''));
+    $phone   = trim((string)($d['phone'] ?? ''));
+    $country = trim((string)($d['country'] ?? ''));
+    $interest= trim((string)($d['interest'] ?? ''));
+    $message = trim((string)($d['message'] ?? ''));
+    $locale  = (($d['locale'] ?? 'en') === 'ar') ? 'ar' : 'en';
+
+    foreach ([&$name,&$company,&$email,&$phone,&$country,&$interest] as &$v) {
+        $v = mb_substr($v, 0, 160);
+    }
+    unset($v);
+    $message = mb_substr($message, 0, 4000);
+
+    if (mb_strlen($name) < 2) out(400, ['error' => 'Please enter your name.']);
+    if (!preg_match('/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/', $email)) {
+        out(400, ['error' => 'Please enter a valid email address.']);
+    }
+    if (!preg_match('/^\+?[0-9][0-9 ()\-]{6,24}$/', $phone)) {
+        out(400, ['error' => 'Please enter a valid phone number.']);
+    }
 }
 
 if (!is_readable($CONFIG_PATH)) {
@@ -138,6 +180,114 @@ function ensure(string $url, string $db, int $uid, string $key, string $model, s
     $found = execute_kw($url, $db, $uid, $key, $model, 'search', [[['name', '=', $name]]], ['limit' => 1]);
     if (!empty($found)) return (int)$found[0];
     return (int)execute_kw($url, $db, $uid, $key, $model, 'create', [['name' => $name]]);
+}
+
+if ($isDemo) {
+    $demoCfg = (isset($cfg['demo']) && is_array($cfg['demo'])) ? $cfg['demo'] : [];
+    // Body "product" is not trusted; only the configured name is.
+    $PRODUCT = (string)($demoCfg['product'] ?? 'SOD Raqam');
+    $demoUser = isset($demoCfg['username']) ? (string)$demoCfg['username'] : '';
+    $demoPass = isset($demoCfg['password']) ? (string)$demoCfg['password'] : '';
+    $demoPayload = ($demoUser !== '' && $demoPass !== '') ? [
+        'url'      => (string)($demoCfg['url'] ?? ''),
+        'username' => $demoUser,
+        'password' => $demoPass,
+    ] : null;
+
+    try {
+        $uid = odoo_call($ODOO_URL, 'common', 'authenticate', [$ODOO_DB, $ODOO_USER, $ODOO_KEY, (object)[]]);
+        if (!$uid) throw new RuntimeException('CRM authentication failed.');
+        $uid = (int)$uid;
+
+        $tagId    = ensure($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'crm.tag', $TAG);
+        $sourceId = ensure($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'utm.source', $SOURCE);
+        $team = execute_kw($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'crm.team', 'search', [[['name', '=', $TEAM]]], ['limit' => 1]);
+
+        $when = (new DateTimeImmutable('now', new DateTimeZone('Asia/Kolkata')))->format('d M Y H:i') . ' IST';
+        $esc  = fn(string $s) => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+        $lang = $locale === 'ar' ? 'Arabic' : 'English';
+
+        $open = execute_kw($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'crm.lead', 'search', [[
+            ['email_from', '=ilike', $email],
+            ['active', '=', true],
+            ['probability', '<', 100],
+        ]], ['limit' => 1, 'order' => 'id desc']);
+
+        $existing = false;
+        if (!empty($open)) {
+            $existing = true;
+            $leadId = (int)$open[0];
+            execute_kw($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'crm.lead', 'write', [[$leadId], [
+                'tag_ids' => [[4, $tagId]],
+            ]]);
+            $note = 'New website demo request (sodraqam.com). Requested product: ' . $esc($PRODUCT)
+                . '. Requested by ' . $esc($name) . ' (' . $esc($phone) . ', ' . $esc($email) . ') at ' . $esc($when) . '.';
+            execute_kw($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'crm.lead', 'message_post', [[$leadId]], [
+                'body'           => $note,
+                'message_type'   => 'comment',
+                'subtype_xmlid'  => 'mail.mt_note',
+            ]);
+        } else {
+            $desc = '<p><b>Requested product:</b> ' . $esc($PRODUCT) . '</p>'
+                . '<p>Requested demo access to <b>' . $esc($PRODUCT) . '</b> on sodraqam.com (website demo form) at ' . $esc($when) . '.</p>'
+                . '<p>Phone: ' . $esc($phone) . '<br/>Email: ' . $esc($email) . '<br/>Language: ' . $lang . '</p>';
+            $title = ($TEST ? '[TEST] ' : '') . 'Website demo: ' . $PRODUCT . ' – ' . $name;
+            $vals = [
+                'name'         => $title,
+                'type'         => 'lead',
+                'contact_name' => $name,
+                'email_from'   => $email,
+                'phone'        => $phone,
+                'description'  => $desc,
+                'tag_ids'      => [[6, 0, [$tagId]]],
+                'source_id'    => $sourceId,
+            ];
+            if (!empty($team)) {
+                $vals['team_id'] = (int)$team[0];
+                $teamRows = execute_kw($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'crm.team', 'read', [$team, ['user_id']]);
+                $leader = (is_array($teamRows) && isset($teamRows[0]['user_id'])) ? $teamRows[0]['user_id'] : false;
+                $vals['user_id'] = (is_array($leader) && isset($leader[0])) ? (int)$leader[0] : false;
+            }
+            $leadId = (int)execute_kw($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'crm.lead', 'create', [$vals],
+                ['context' => ['mail_auto_subscribe_no_notify' => true]]);
+        }
+
+        $body = ['ok' => true, 'id' => $leadId];
+        if ($existing) $body['existing'] = true;
+        if ($demoPayload !== null) {
+            $body['demo'] = $demoPayload;
+        } else {
+            $body['message'] = 'SOD will share access shortly.';
+        }
+        out(200, $body);
+    } catch (Throwable $e) {
+        $dir = '/var/lib/sod-raqam-lead';
+        try {
+            if (!is_dir($dir)) @mkdir($dir, 0750, true);
+            $line = json_encode([
+                'ts'      => (new DateTimeImmutable('now', new DateTimeZone('Asia/Kolkata')))->format(DateTimeInterface::ATOM),
+                'name'    => $name,
+                'phone'   => $phone,
+                'email'   => $email,
+                'locale'  => $locale,
+                'product' => $PRODUCT,
+                'error'   => $e->getMessage(),
+            ], JSON_UNESCAPED_UNICODE);
+            if (is_string($line)) {
+                @file_put_contents($dir . '/pending-demo-leads.jsonl', $line . "\n", FILE_APPEND | LOCK_EX);
+            }
+        } catch (Throwable $ignored) {
+            // ignore failures to write
+        }
+        error_log('sod-raqam demo lead: ' . $e->getMessage());
+        $body = ['ok' => true, 'queued' => true];
+        if ($demoPayload !== null) {
+            $body['demo'] = $demoPayload;
+        } else {
+            $body['message'] = 'SOD will share access shortly.';
+        }
+        out(200, $body);
+    }
 }
 
 try {

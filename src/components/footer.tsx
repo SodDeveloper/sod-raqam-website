@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { DEMO_URL, CONTACT_EMAIL, withBase } from "@/lib/site";
+import { DemoLink } from "@/components/demo/demo-dialog";
+import { CONTACT_EMAIL, withBase } from "@/lib/site";
 import { Branches } from "@/components/branches";
 
 export function Footer() {
@@ -22,7 +23,7 @@ export function Footer() {
               <li><a href="#features" className="hover:text-white">{nav("features")}</a></li>
               <li><a href="#modules" className="hover:text-white">{nav("modules")}</a></li>
               <li><a href="#screenshots" className="hover:text-white">{nav("screenshots")}</a></li>
-              <li><a href={DEMO_URL} target="_blank" rel="noopener" className="hover:text-white">{nav("demo")}</a></li>
+              <li><DemoLink className="text-start hover:text-white">{nav("demo")}</DemoLink></li>
             </ul>
           </div>
           <div>

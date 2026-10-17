@@ -1,8 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { DemoButton } from "@/components/demo/demo-dialog";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
-import { DEMO_URL } from "@/lib/site";
 
 export function Cta() {
   const t = useTranslations("cta");
@@ -16,9 +16,9 @@ export function Cta() {
               <h2 className="mx-auto max-w-2xl text-3xl font-bold sm:text-4xl">{t("title")}</h2>
               <p className="mx-auto mt-4 max-w-xl text-white/80">{t("subtitle")}</p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <ButtonLink href={DEMO_URL} target="_blank" rel="noopener" variant="white" size="lg">
+                <DemoButton variant="white" size="lg">
                   {t("button")} <ArrowRight className="h-5 w-5 rtl:rotate-180" />
-                </ButtonLink>
+                </DemoButton>
                 <ButtonLink href="#contact" variant="outline" size="lg" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:border-white/60">
                   {t("secondary")}
                 </ButtonLink>

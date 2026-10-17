@@ -4,12 +4,14 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { Menu, X, Globe } from "lucide-react";
-import { ButtonLink } from "@/components/ui/button-link";
-import { DEMO_URL, withBase } from "@/lib/site";
+import { DemoButton, useDemo } from "@/components/demo/demo-dialog";
+import { buttonVariants } from "@/components/ui/button";
+import { withBase } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function Header() {
   const t = useTranslations("nav");
+  const { openDemo } = useDemo();
   const locale = useLocale();
   const pathname = usePathname();
   const other = locale === "ar" ? "en" : "ar";
@@ -56,9 +58,9 @@ export function Header() {
           <a href={switchHref} className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-indigo-brand hover:bg-lavender">
             <Globe className="h-4 w-4" /> {t("langLabel")}
           </a>
-          <ButtonLink href={DEMO_URL} target="_blank" rel="noopener" size="sm" className="hidden sm:inline-flex">
+          <DemoButton size="sm" className="hidden sm:inline-flex">
             {t("demo")}
-          </ButtonLink>
+          </DemoButton>
           <button className="lg:hidden rounded-full p-2 text-midnight" onClick={() => setOpen(!open)} aria-label="Menu">
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -72,6 +74,16 @@ export function Header() {
                 {t(k)}
               </a>
             ))}
+            <button
+              type="button"
+              className={cn(buttonVariants({ size: "sm" }), "mt-2 w-full")}
+              onClick={() => {
+                setOpen(false);
+                openDemo();
+              }}
+            >
+              {t("demo")}
+            </button>
           </nav>
         </div>
       )}
