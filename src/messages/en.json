@@ -204,7 +204,13 @@
       "stock-ledger": "Inventory — stock ledger",
       "trial-balance": "Accounting — trial balance",
       "profit-loss": "Profit & loss statement",
-      "payroll": "HR — payroll run"
+      "payroll": "HR — payroll run",
+      "dash-crm": "CRM dashboard",
+      "dash-sales": "Sales dashboard",
+      "dash-purchase": "Purchase dashboard",
+      "dash-inventory": "Inventory dashboard",
+      "dash-accounting": "Accounting dashboard",
+      "dash-hr": "HR dashboard"
     }
   },
   "why": {
@@ -302,7 +308,7 @@
     "subtitle": "Tell us about your business and we'll set up a tailored walkthrough for the GCC or India.",
     "email": "Email",
     "demoTitle": "Prefer to explore first?",
-    "demoDesc": "Get an instant demo login from our proof-of-concept page.",
+    "demoDesc": "Get an instant demo login — no waiting.",
     "demoButton": "Open the live demo",
     "branchesTitle": "Our offices",
     "call": "Call",
@@ -362,5 +368,44 @@
     "qatar": "Qatar — Doha",
     "uae": "UAE — Dubai",
     "india": "India — Kochi"
+  },
+  "demo": {
+    "title": "Try the SOD Raqam live demo",
+    "subtitle": "Tell us who you are and get an instant demo login.",
+    "name": "Full name",
+    "namePh": "Your name",
+    "phone": "Phone (with country code)",
+    "email": "Email",
+    "emailPh": "you@company.com",
+    "submit": "Get demo login",
+    "submitting": "Getting your login…",
+    "note": "We'll use these details only to follow up on your demo.",
+    "errName": "Please enter your name.",
+    "errPhone": "Please enter a valid phone number (country code allowed).",
+    "errEmail": "Please enter a valid email address.",
+    "errRate": "Too many requests. Please try again in a few minutes.",
+    "errGeneric": "We couldn't get your demo login right now. Please try again, or email us directly.",
+    "thanksTitle": "Thank you!",
+    "thanksBody": "We've received your request. Our team will share your demo access shortly.",
+    "successTitle": "Your demo login is ready",
+    "successBody": "Use these details to sign in to SOD Raqam.",
+    "username": "Username",
+    "password": "Password",
+    "copy": "Copy",
+    "copied": "Copied",
+    "openApp": "Open SOD Raqam",
+    "close": "Close",
+    "demoNote": "Demo data only. The demo opens in a new tab."
+  },
+  "lightbox": {
+    "close": "Close",
+    "prev": "Previous",
+    "next": "Next",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Reset zoom",
+    "counter": "{current} / {total}",
+    "hint": "Scroll or pinch to zoom · drag to pan · swipe or use arrow keys to browse · Esc to close",
+    "open": "Open {title}"
   }
 }

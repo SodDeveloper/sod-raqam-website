@@ -164,6 +164,22 @@ contact form submits to a small endpoint hosted on **our** Raqam server:
 
 Auth uses Odoo's external API (JSON-RPC `common.authenticate` + `object.execute_kw`).
 
+### Demo request flow ("Try live demo")
+
+All "Try live demo" buttons (header, mobile menu, hero, CTA, contact card, footer) open an
+in-site modal instead of linking to poc.soderp.com. It asks for the same fields as the
+poc.soderp.com SOD Raqam card (full name, phone with country code, email, honeypot) and POSTs
+`{"type":"demo","product":"SOD Raqam",name,phone,email,website,locale}` to the same endpoint.
+
+The endpoint mirrors the POC demo-lead service: open lead with the same email -> add tag +
+post a note; otherwise create `crm.lead` "Website demo: SOD Raqam – <name>" (type lead, tag
+**SOD Raqam**, source **Website - sodraqam.com**, team **Sales**, salesperson = team leader,
+"Requested product: SOD Raqam" in the description). The demo login is returned only in the
+success response, from the optional `"demo"` key of the server config
+(`{"product","url","username","password"}`) — it is never in the static bundle. If Odoo is
+unreachable the request is appended to `/var/lib/sod-raqam-lead/pending-demo-leads.jsonl` and
+the login is still shown (same as the POC queue). Contact-form requests are unchanged.
+
 ### Credentials (filled in by Ragesh / Anas — never committed)
 
 The endpoint reads a **root-only JSON config outside the web root**, default

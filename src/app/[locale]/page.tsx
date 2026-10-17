@@ -12,6 +12,7 @@ import { Industries } from "@/components/sections/industries";
 import { Faq } from "@/components/sections/faq";
 import { Cta } from "@/components/sections/cta";
 import { Contact } from "@/components/sections/contact";
+import { DemoProvider } from "@/components/demo/demo-dialog";
 import { SITE_URL } from "@/lib/site";
 import { routing } from "@/i18n/routing";
 
@@ -53,20 +54,22 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Header />
-      <main>
-        <Hero />
-        <Features />
-        <Modules />
-        <Screenshots />
-        <Platform />
-        <Why />
-        <Industries />
-        <Faq />
-        <Cta />
-        <Contact />
-      </main>
-      <Footer />
+      <DemoProvider>
+        <Header />
+        <main>
+          <Hero />
+          <Features />
+          <Modules />
+          <Screenshots />
+          <Platform />
+          <Why />
+          <Industries />
+          <Faq />
+          <Cta />
+          <Contact />
+        </main>
+        <Footer />
+      </DemoProvider>
     </>
   );
 }

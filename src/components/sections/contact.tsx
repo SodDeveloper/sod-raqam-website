@@ -1,16 +1,12 @@
 "use client";
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Mail, ArrowRight, CheckCircle2, AlertCircle, Loader2, ExternalLink } from "lucide-react";
+import { Mail, ArrowRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ButtonLink } from "@/components/ui/button-link";
+import { DemoButton } from "@/components/demo/demo-dialog";
 import { Reveal } from "@/components/ui/reveal";
-import { CONTACT_EMAIL, DEMO_URL } from "@/lib/site";
+import { CONTACT_EMAIL, LEAD_ENDPOINT } from "@/lib/site";
 import { Branches } from "@/components/branches";
-
-const ENDPOINT =
-  process.env.NEXT_PUBLIC_LEAD_ENDPOINT ||
-  "https://erp.sodraqam.com/api/website-lead";
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/;
 
 type Status = "idle" | "sending" | "ok" | "err";
@@ -36,7 +32,7 @@ export function Contact() {
     }
     setStatus("sending"); setMsg("");
     try {
-      const res = await fetch(ENDPOINT, {
+      const res = await fetch(LEAD_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, locale }),
@@ -70,9 +66,9 @@ export function Contact() {
             <div className="mt-10 rounded-2xl border border-indigo-brand/10 bg-white/70 p-6 card-shadow">
               <h3 className="font-semibold text-midnight">{t("demoTitle")}</h3>
               <p className="mt-1.5 text-sm text-midnight/65">{t("demoDesc")}</p>
-              <ButtonLink href={DEMO_URL} target="_blank" rel="noopener" variant="outline" size="sm" className="mt-4">
-                {t("demoButton")} <ExternalLink className="h-4 w-4" />
-              </ButtonLink>
+              <DemoButton variant="outline" size="sm" className="mt-4">
+                {t("demoButton")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+              </DemoButton>
             </div>
           </Reveal>
 

@@ -1,5 +1,6 @@
 export const SITE_URL = "https://sodraqam.com";
-export const DEMO_URL = "https://poc.soderp.com";
+export const RAQAM_APP_URL = "https://erp.sodraqam.com";
+export const LEAD_ENDPOINT = process.env.NEXT_PUBLIC_LEAD_ENDPOINT || "https://erp.sodraqam.com/api/website-lead";
 export const CONTACT_EMAIL = "info@sodinfotech.com";
 export const locales = ["en", "ar"] as const;
 export type Locale = (typeof locales)[number];
