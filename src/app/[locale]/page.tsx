@@ -38,7 +38,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         description: meta("description"),
         url: `${SITE_URL}/${locale}/`,
         offers: { "@type": "Offer", availability: "https://schema.org/InStock" },
-        publisher: { "@type": "Organization", name: "SOD Technologies" },
       },
       {
         "@type": "FAQPage",

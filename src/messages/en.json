@@ -237,8 +237,8 @@
         "desc": "A quick, responsive web app your team can learn in a day."
       },
       {
-        "title": "Backed by SOD",
-        "desc": "Built and supported by SOD Technologies, with implementation help for your rollout."
+        "title": "Implementation and support",
+        "desc": "Hands-on help to set up and roll out, with ongoing support after go-live."
       }
     ]
   },
@@ -320,7 +320,6 @@
     "company": "Company",
     "legal": "Legal",
     "rights": "All rights reserved.",
-    "madeby": "A product of SOD Technologies.",
     "offices": "Our offices"
   },
   "form": {
@@ -365,9 +364,9 @@
     "consent": "We'll only use your details to follow up on your enquiry."
   },
   "branches": {
-    "qatar": "Qatar — Doha",
-    "uae": "UAE — Dubai",
-    "india": "India — Kochi"
+    "qatar": "Qatar",
+    "uae": "UAE",
+    "india": "India"
   },
   "demo": {
     "title": "Try the SOD Raqam live demo",

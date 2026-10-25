@@ -7,6 +7,7 @@ import { Branches } from "@/components/branches";
 export function Footer() {
   const t = useTranslations("footer");
   const nav = useTranslations("nav");
+  const c = useTranslations("contact");
   const locale = useLocale();
   const year = new Date().getFullYear();
   return (
@@ -32,7 +33,7 @@ export function Footer() {
               <li><a href="#why" className="hover:text-white">{nav("why")}</a></li>
               <li><a href="#industries" className="hover:text-white">{nav("industries")}</a></li>
               <li><a href="#contact" className="hover:text-white">{nav("contact")}</a></li>
-              <li><a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-white">{CONTACT_EMAIL}</a></li>
+              <li className="mt-4 border-t border-white/10 pt-4 text-white/55">{c("email")}: <a href={`mailto:${CONTACT_EMAIL}`} dir="ltr" className="text-white/80 hover:text-white">{CONTACT_EMAIL}</a></li>
             </ul>
           </div>
         </div>
@@ -45,7 +46,6 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-sm text-white/50 sm:flex-row">
           <p>© {year} SOD Raqam. {t("rights")}</p>
-          <p>{t("madeby")}</p>
         </div>
       </div>
     </footer>

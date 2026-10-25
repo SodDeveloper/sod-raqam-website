@@ -1,52 +1,34 @@
 import { useTranslations } from "next-intl";
-import { MapPin, Phone, Mail } from "lucide-react";
-import { BRANCHES, CONTACT_EMAIL } from "@/lib/site";
+import { withBase } from "@/lib/site";
 
-/** Branch contact cards. Data from the official SOD Infotech site. */
+/** Office countries shown as flags and names separated by pipes (same as the brochure). */
+const COUNTRIES = [
+  { id: "uae", flag: "ae" },
+  { id: "qatar", flag: "qa" },
+  { id: "india", flag: "in" },
+] as const;
+
 export function Branches({ variant = "cards" }: { variant?: "cards" | "footer" }) {
-  const t = useTranslations("contact");
   const b = useTranslations("branches");
-
-  if (variant === "footer") {
-    return (
-      <div className="grid gap-6 sm:grid-cols-3">
-        {BRANCHES.map((br) => (
-          <div key={br.id}>
-            <h4 className="text-sm font-semibold text-white">{b(br.id)}</h4>
-            <p className="mt-2 text-sm leading-relaxed text-white/55">{br.address}</p>
-            {br.phone && (
-              <a href={`tel:${br.phone.replace(/\s/g, "")}`} dir="ltr" className="mt-1 inline-block text-sm text-white/70 hover:text-white">
-                {br.phone}
-              </a>
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  }
-
+  const footer = variant === "footer";
   return (
-    <div className="grid gap-4 sm:grid-cols-3">
-      {BRANCHES.map((br) => (
-        <div key={br.id} className="rounded-2xl border border-indigo-brand/10 bg-white p-5 card-shadow">
-          <h4 className="font-semibold text-midnight">{b(br.id)}</h4>
-          <div className="mt-3 flex items-start gap-2 text-sm text-midnight/70">
-            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-violet-brand" />
-            <span className="leading-relaxed">{br.address}</span>
-          </div>
-          {br.phone && (
-            <a href={`tel:${br.phone.replace(/\s/g, "")}`} className="mt-3 flex items-center gap-2 text-sm text-indigo-brand hover:underline">
-              <Phone className="h-4 w-4" />
-              <span dir="ltr">{br.phone}</span>
-              <span className="sr-only">{t("call")}</span>
-            </a>
-          )}
-          <a href={`mailto:${CONTACT_EMAIL}`} className="mt-2 flex items-center gap-2 text-sm text-indigo-brand hover:underline">
-            <Mail className="h-4 w-4" />
-            <span dir="ltr">{CONTACT_EMAIL}</span>
-          </a>
-        </div>
+    <ul
+      className={
+        footer
+          ? "flex flex-wrap items-center gap-x-5 gap-y-3 text-base font-semibold text-white"
+          : "flex flex-wrap items-center justify-center gap-x-6 gap-y-3 rounded-2xl border border-indigo-brand/10 bg-white px-6 py-5 text-lg font-semibold text-midnight card-shadow"
+      }
+    >
+      {COUNTRIES.map((c, i) => (
+        <li key={c.id} className="flex items-center gap-5">
+          {i > 0 && <span aria-hidden="true" className={footer ? "h-5 w-px bg-white/25" : "h-6 w-px bg-midnight/15"} />}
+          <span className="flex items-center gap-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={withBase(`/flags/${c.flag}.svg`)} alt="" width={28} height={19} className="h-[19px] w-7 rounded-[3px] object-cover ring-1 ring-black/10" />
+            {b(c.id)}
+          </span>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
