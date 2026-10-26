@@ -65,3 +65,15 @@ html[dir="rtl"] body {
 ::selection {
   background: color-mix(in oklab, #7B4DDB 30%, transparent);
 }
+
+/* FAQ accordion open/close animations (used by components/ui/accordion.tsx).
+   Radix keeps closed content mounted until the exit animation ends, so these
+   keyframes must exist or answers never hide. */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
