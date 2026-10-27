@@ -28,6 +28,16 @@
  * OUTSIDE the web root in a root-only JSON file; see $CONFIG_PATH.
  * Never commit real credentials.
  *
+ * Products (added 24 Oct 2026): default "raqam" (unchanged behaviour).
+ * "eduplus" is selected by body product "eduplus" / "SOD EduPlus" or by
+ * Origin https://sodeduplus.com / https://www.sodeduplus.com. It uses tag
+ * "SOD EduPlus", source "Website - sodeduplus.com" (overridable via config
+ * key "eduplus": {"tag","source","team"}) and the demo flow returns
+ *   "demos": {"full":{url,username,password},"lite":{url,username,password}}
+ * read from config "eduplus.demos.full|lite" or env SOD_EDUPLUS_DEMO_FULL_URL,
+ * _FULL_USER, _FULL_PASSWORD, SOD_EDUPLUS_DEMO_LITE_URL, _LITE_USER,
+ * _LITE_PASSWORD (env wins). Missing creds -> "SOD will share access shortly."
+ *
  * Optional top-level config key "demo" (body "product" is ignored; only
  * demo.product, default "SOD Raqam", is trusted):
  *   "demo": {"product":"SOD Raqam","url":"https://erp.sodraqam.com",
@@ -42,6 +52,8 @@ $ALLOWED_ORIGINS = [
     'https://sodraqam.com',
     'https://www.sodraqam.com',
     'https://soddeveloper.github.io',
+    'https://sodeduplus.com',
+    'https://www.sodeduplus.com',
     'http://localhost:3000',
     'http://localhost:4173',
 ];
@@ -79,6 +91,11 @@ $d = json_decode($raw ?: '{}', true);
 if (!is_array($d)) {
     out(400, ['error' => 'Invalid request.']);
 }
+
+$EDUPLUS_ORIGINS = ['https://sodeduplus.com', 'https://www.sodeduplus.com'];
+$productKey = strtolower(preg_replace('/[\s_-]+/', '', (string)($d['product'] ?? '')));
+$IS_EDUPLUS = in_array($productKey, ['eduplus', 'sodeduplus'], true)
+    || in_array($origin, $EDUPLUS_ORIGINS, true);
 
 // Honeypot: a filled "website" field means a bot. Pretend success, store nothing.
 if (!empty($d['website'])) {
@@ -145,6 +162,27 @@ $TAG      = (string)($crm['tag'] ?? 'SOD Raqam');
 $SOURCE   = (string)($crm['source'] ?? 'Website - sodraqam.com');
 $TEAM     = (string)($crm['team'] ?? 'Sales');
 $TEST     = !empty($d['test']) || !empty($crm['test']);
+$SITE     = 'sodraqam.com';
+$PRODUCT_NAME = 'SOD Raqam';
+if ($IS_EDUPLUS) {
+    $edu = (isset($cfg['eduplus']) && is_array($cfg['eduplus'])) ? $cfg['eduplus'] : [];
+    $TAG  = (string)($edu['tag'] ?? 'SOD EduPlus');
+    $SOURCE = (string)($edu['source'] ?? 'Website - sodeduplus.com');
+    $TEAM = (string)($edu['team'] ?? $TEAM);
+    $SITE = 'sodeduplus.com';
+    $PRODUCT_NAME = 'SOD EduPlus';
+}
+
+/** EduPlus demo login for one edition: env overrides config; null if incomplete. */
+function eduplus_demo(array $cfg, string $ed): ?array {
+    $c = $cfg['eduplus']['demos'][$ed] ?? [];
+    if (!is_array($c)) $c = [];
+    $E = 'SOD_EDUPLUS_DEMO_' . strtoupper($ed) . '_';
+    $url  = getenv($E . 'URL')      ?: (string)($c['url'] ?? '');
+    $user = getenv($E . 'USER')     ?: (string)($c['username'] ?? '');
+    $pass = getenv($E . 'PASSWORD') ?: (string)($c['password'] ?? '');
+    return ($user !== '' && $pass !== '') ? ['url' => $url, 'username' => $user, 'password' => $pass] : null;
+}
 
 /** Minimal Odoo JSON-RPC client. */
 function odoo_call(string $url, string $service, string $method, array $args) {
@@ -186,6 +224,7 @@ if ($isDemo) {
     $demoCfg = (isset($cfg['demo']) && is_array($cfg['demo'])) ? $cfg['demo'] : [];
     // Body "product" is not trusted; only the configured name is.
     $PRODUCT = (string)($demoCfg['product'] ?? 'SOD Raqam');
+    $demoKey = 'demo';
     $demoUser = isset($demoCfg['username']) ? (string)$demoCfg['username'] : '';
     $demoPass = isset($demoCfg['password']) ? (string)$demoCfg['password'] : '';
     $demoPayload = ($demoUser !== '' && $demoPass !== '') ? [
@@ -193,6 +232,12 @@ if ($isDemo) {
         'username' => $demoUser,
         'password' => $demoPass,
     ] : null;
+    if ($IS_EDUPLUS) {
+        $PRODUCT = 'SOD EduPlus';
+        $demoKey = 'demos';
+        $demos = array_filter(['full' => eduplus_demo($cfg, 'full'), 'lite' => eduplus_demo($cfg, 'lite')]);
+        $demoPayload = $demos ?: null;
+    }
 
     try {
         $uid = odoo_call($ODOO_URL, 'common', 'authenticate', [$ODOO_DB, $ODOO_USER, $ODOO_KEY, (object)[]]);
@@ -220,7 +265,7 @@ if ($isDemo) {
             execute_kw($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'crm.lead', 'write', [[$leadId], [
                 'tag_ids' => [[4, $tagId]],
             ]]);
-            $note = 'New website demo request (sodraqam.com). Requested product: ' . $esc($PRODUCT)
+            $note = 'New website demo request (' . $SITE . '). Requested product: ' . $esc($PRODUCT)
                 . '. Requested by ' . $esc($name) . ' (' . $esc($phone) . ', ' . $esc($email) . ') at ' . $esc($when) . '.';
             execute_kw($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'crm.lead', 'message_post', [[$leadId]], [
                 'body'           => $note,
@@ -229,7 +274,7 @@ if ($isDemo) {
             ]);
         } else {
             $desc = '<p><b>Requested product:</b> ' . $esc($PRODUCT) . '</p>'
-                . '<p>Requested demo access to <b>' . $esc($PRODUCT) . '</b> on sodraqam.com (website demo form) at ' . $esc($when) . '.</p>'
+                . '<p>Requested demo access to <b>' . $esc($PRODUCT) . '</b> on ' . $SITE . ' (website demo form) at ' . $esc($when) . '.</p>'
                 . '<p>Phone: ' . $esc($phone) . '<br/>Email: ' . $esc($email) . '<br/>Language: ' . $lang . '</p>';
             $title = ($TEST ? '[TEST] ' : '') . 'Website demo: ' . $PRODUCT . ' – ' . $name;
             $vals = [
@@ -255,7 +300,7 @@ if ($isDemo) {
         $body = ['ok' => true, 'id' => $leadId];
         if ($existing) $body['existing'] = true;
         if ($demoPayload !== null) {
-            $body['demo'] = $demoPayload;
+            $body[$demoKey] = $demoPayload;
         } else {
             $body['message'] = 'SOD will share access shortly.';
         }
@@ -282,7 +327,7 @@ if ($isDemo) {
         error_log('sod-raqam demo lead: ' . $e->getMessage());
         $body = ['ok' => true, 'queued' => true];
         if ($demoPayload !== null) {
-            $body['demo'] = $demoPayload;
+            $body[$demoKey] = $demoPayload;
         } else {
             $body['message'] = 'SOD will share access shortly.';
         }
@@ -299,7 +344,7 @@ try {
     $sourceId = ensure($ODOO_URL, $ODOO_DB, $uid, $ODOO_KEY, 'utm.source', $SOURCE);
 
     $esc = fn(string $s) => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
-    $desc = '<p><b>Website lead — sodraqam.com</b></p><ul>'
+    $desc = '<p><b>Website lead — ' . $SITE . '</b></p><ul>'
         . '<li>Company: ' . $esc($company ?: '—') . '</li>'
         . '<li>Country: ' . $esc($country ?: '—') . '</li>'
         . '<li>Interested in: ' . $esc($interest ?: '—') . '</li>'
@@ -309,7 +354,7 @@ try {
         . '</ul>'
         . ($message !== '' ? '<p>' . nl2br($esc($message)) . '</p>' : '');
 
-    $title = ($TEST ? '[TEST] ' : '') . 'Website demo: SOD Raqam – ' . $name
+    $title = ($TEST ? '[TEST] ' : '') . 'Website demo: ' . $PRODUCT_NAME . ' – ' . $name
         . ($company ? ' (' . $company . ')' : '');
 
     $vals = [
